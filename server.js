@@ -31,10 +31,7 @@
 
 
     //database connection 
-
-    const url = 'mongodb+srv://Siddhesh:vQvMhjV6iAkTDrdW@demo.gexqp.mongodb.net/pizza';
-
-    mongoose.connect(url, {
+    mongoose.connect(process.env.MONGO_CONNECTION_URL, {
         useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true,
         useFindAndModify: true
     });
@@ -99,12 +96,17 @@
 
 
     //routes
-    require('./routes/web')(app) //call function
+    require('./routes/web')(app)
+    app.use((req, res) => {
+            res.status(404).send('<h1>404, page not found</h1>')
+        })
 
     /////////////
     const server = app.listen(PORT, () => {  
         console.log(`Listening on port ${PORT}`)
     })
+
+
 
     //socket
 const io = require('socket.io')(server)
